@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 
 // Domo Color Palette
 const DOMO_PALETTE = {
@@ -554,22 +554,6 @@ function applyInkBleed(imageData, amount, roughness = 0.5) {
   const isInk = (i) => {
     const gray = original[i] * 0.299 + original[i + 1] * 0.587 + original[i + 2] * 0.114;
     return gray < 128;
-  };
-  
-  // Helper to get ink color from a neighbor (for coloring bled pixels)
-  const getInkColor = (x, y) => {
-    const neighbors = [
-      [x, y - 1], [x, y + 1], [x - 1, y], [x + 1, y]
-    ];
-    for (const [nx, ny] of neighbors) {
-      if (nx >= 0 && nx < w && ny >= 0 && ny < h) {
-        const ni = (ny * w + nx) * 4;
-        if (isInk(ni)) {
-          return [original[ni], original[ni + 1], original[ni + 2]];
-        }
-      }
-    }
-    return [0, 0, 0]; // Fallback to black
   };
   
   // Run multiple dilation passes
